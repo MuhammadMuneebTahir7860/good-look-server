@@ -10,6 +10,8 @@ const adminRouter = require("./routes/admin-router");
 const messageRoutes = require("./routes/messageRoutes");
 const orderRoutes = require("./routes/order-router");
 const blogRouter = require("./routes/blog-router");
+const serviceRouter = require("./routes/service-router");
+
 const app = express();
 require("dotenv").config();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,6 +38,7 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", blogRouter);
+app.use("/api", serviceRouter);
 
 // app.listen(process.env.PORT || 5002, () =>
 //   console.log(`Server running on port ${process.env.PORT}`)
