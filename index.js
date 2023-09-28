@@ -11,6 +11,8 @@ const messageRoutes = require("./routes/messageRoutes");
 const orderRoutes = require("./routes/order-router");
 const blogRouter = require("./routes/blog-router");
 const serviceRouter = require("./routes/service-router");
+const workerRouter = require("./routes/worker-router");
+
 
 const app = express();
 require("dotenv").config();
@@ -39,6 +41,7 @@ app.use("/api/message", messageRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", blogRouter);
 app.use("/api", serviceRouter);
+app.use("/api", workerRouter);
 
 // app.listen(process.env.PORT || 5002, () =>
 //   console.log(`Server running on port ${process.env.PORT}`)
