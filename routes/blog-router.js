@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.post("/addBlogPost", BlogController.addBlogPost);
 router.get("/getAllBlogPost", BlogController.getAllBlogPost);
+router.get("/getBlogById/:id", BlogController.getBlogById);
 router.delete("/deleteBlogPost/:id", BlogController.deleteBlogPost);
 router.put("/updateBlogPost", BlogController.updateBlogPost);
 router.post("/addBlogComment", BlogController.addBlogComment);

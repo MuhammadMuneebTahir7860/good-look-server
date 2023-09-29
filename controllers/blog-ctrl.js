@@ -4,8 +4,18 @@ const { v4: uuidv4 } = require("uuid");
 
 module.exports.getAllBlogPost = async (req, res) => {
   try {
-    console.log('working');
+    console.log("working");
     const resValue = await BlogModel.find();
+    res.status(200).json({ data: resValue });
+  } catch (error) {
+    res.status(400).json({ data: error.message });
+  }
+};
+
+module.exports.getBlogById = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const resValue = await BlogModel.findOne({ _id: id });
     res.status(200).json({ data: resValue });
   } catch (error) {
     res.status(400).json({ data: error.message });
