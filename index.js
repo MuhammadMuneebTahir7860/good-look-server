@@ -13,9 +13,9 @@ const blogRouter = require("./routes/blog-router");
 const serviceRouter = require("./routes/service-router");
 const workerRouter = require("./routes/worker-router");
 const applySupplierRouter = require("./routes/apply-supplier");
-const scheuldeRouter=require('./routes/schedule-router');
-const billingRouter=require('./routes/billing-router');
-const measurementRouter=require('./routes/mesurement-router');
+const scheuldeRouter = require("./routes/schedule-router");
+const billingRouter = require("./routes/billing-router");
+const measurementRouter = require("./routes/mesurement-router");
 const app = express();
 require("dotenv").config();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -56,34 +56,3 @@ app.use("/api", measurementRouter);
 const server = app.listen(process.env.PORT || 5002, () =>
   console.log(`Server running on port ${process.env.PORT}`)
 );
-const io = require("socket.io")(server, {
-  pingTimeout: 60000,
-  cors: {
-    origin: "http://localhost:3000",
-  },
-});
-
-io.on("connection", (socket) => {
-  console.log("Connected to socket.io");
-  socket.on("setup", (userData) => {
-    socket.join(userData._id);
-    socket.emit("connected");
-  });
-
-  socket.on("join chat", (room) => {
-    socket.join(room);
-    console.log("User Joined Room: " + room);
-  });
-  socket.on("typing", (room) => socket.in(room).emit("typing"));
-  socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
-
-  socket.on("new message", (newMessageRecieved) => {
-    var chat = newMessageRecieved;
-    socket.to(chat?.chat?._id).emit("message received", newMessageRecieved);
-  });
-
-  socket.off("setup", () => {
-    console.log("USER DISCONNECTED");
-    socket.leave(userData._id);
-  });
-});
