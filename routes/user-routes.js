@@ -6,7 +6,6 @@ const User = require("../controllers/user-ctrl");
 const router = express.Router();
 
 router.post("/signup", User.userSignup);
-router.get("/:id/verify/:token/", User.verify);
 router.post("/login", User.login);
 router.post("/getLoggedInUser", User.getLoggedInUser);
 router.put("/addFavourite", User.addFavourite);

@@ -12,6 +12,16 @@ module.exports.getAllBlogPost = async (req, res) => {
   }
 };
 
+module.exports.getSingleBlogPost = async (req, res) => {
+  try {
+    console.log('working');
+    const resValue = await BlogModel.find({_id:req});
+    res.status(200).json({ data: resValue });
+  } catch (error) {
+    res.status(400).json({ data: error.message });
+  }
+};
+
 module.exports.addBlogPost = async (req, res) => {
   const newBlog = {
     title: req.body.title,

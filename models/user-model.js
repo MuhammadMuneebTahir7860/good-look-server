@@ -1,45 +1,18 @@
 var mongoose = require("mongoose");
 var UserSchema = mongoose.Schema({
-  name: {
-    type: String,
-  },
-  address: {
-    type: String,
-  },
-  img: {
+  fullName: {
     type: String,
   },
   email: {
     type: String,
     required: true,
   },
-  contact: {
-    type: String,
-  },
   password: {
     type: String,
     required: true,
     select: 0,
   },
-  favouriteProducts: {
-    type: Array,
-  },
-  isVerified: {
-    type: Boolean,
-    defaul: false,
-  },
-  publish: {
-    type: Boolean,
-    default: false,
-  },
-  feedbacks: {
-    type: Array,
-  },
-  overAllRating: {
-    type: String,
-    default: 0,
-  },
-  createAt: {
+   createAt: {
     type: Date,
     default: Date.now(),
   },

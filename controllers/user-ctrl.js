@@ -10,7 +10,7 @@ const crypto = require("crypto");
 const { v4: uuidv4 } = require("uuid");
 
 module.exports.userSignup = async (req, res) => {
-  const { email, password, contact, address, name, isVerified } = req.body.data;
+  const { email, password, fullName, } = req.body.data;
   let user = await UserModel.findOne({ email: email });
   if (user) {
     res.status(400).send("Email id already exists");
@@ -21,30 +21,17 @@ module.exports.userSignup = async (req, res) => {
       const newUser = new UserModel({
         email,
         password: encryptedPassword,
-        contact,
-        address,
-        name,
-        isVerified,
+        fullName,
       });
       var token = await jwt.sign(
         { email: email, role: "user", _id: newUser._id },
         process.env.jwtKey
       );
       user = await newUser.save();
-      const confrimToken = await new Token({
-        userId: user._id,
-        token: crypto.randomBytes(32).toString("hex"),
-      }).save();
-
-      const url = `${process.env.BASE_URI}users/${user.id}/verify/${confrimToken.token}`;
-      await SendEmail(user.email, "Verify Email", url);
       const responseData = {
-        message: "An Email sent to your account please verify",
         data: {
-          // token: token,
-          contact: newUser.contact,
-          address: newUser.address,
-          name: newUser.name,
+          token: token,
+          fullName: newUser.fullName,
           email: newUser.email,
           _id: newUser._id,
         },
@@ -57,28 +44,10 @@ module.exports.userSignup = async (req, res) => {
     }
   }
 };
-module.exports.verify = async (req, res) => {
-  try {
-    const user = await UserModel.findOne({ _id: req.params.id });
-    if (!user) return res.status(400).send({ message: "Invalid link" });
 
-    const token = await Token.findOne({
-      userId: user._id,
-      token: req.params.token,
-    });
-    if (!token) return res.status(400).send({ message: "Invalid link" });
-
-    await UserModel.findByIdAndUpdate(user._id, { isVerified: true });
-    // await token.remove();
-    res.status(200).send({ message: "Email verified successfully" });
-  } catch (error) {
-    res.status(500).send({ message: "Internal Server Error" });
-  }
-};
 
 module.exports.login = async (req, res) => {
   const { email, password } = req.body;
-
   const user = await UserModel.findOne({ email: email }).select("+password");
   if (!user) {
     return res.status(400).json({ msg: "Please enter valid email" });
@@ -89,31 +58,13 @@ module.exports.login = async (req, res) => {
       { email: user.email, role: "user", _id: user._id },
       process.env.jwtKey
     );
-    if (!user.isVerified) {
-      // let token = await Token.findOne({ userId: user._id });
-      // if (!token) {
-      //   confrimToken = await new Token({
-      //     userId: user._id,
-      //     token: crypto.randomBytes(32).toString("hex"),
-      //   }).save();
-      //   const url = `${process.env.BASE_URI}users/${user.id}/verify/${confrimToken.token}`;
-      //   await SendEmail(user.email, "Verify Email", url);
-      // }
 
-      return res.status(400).json({ message: "Please verify your email before logging in." });
-    }
     let userRecord = {
-      role: "user",
+      // role: "user",
       email: user.email,
+      fullName: user.fullName,
       token,
       _id: user._id,
-      contact: user.contact,
-      address: user.address,
-      name: user.name,
-      img: user.img ? user.img : "",
-      favoriteSuppliers: user?.favoriteSuppliers,
-      feedbacks: user?.feedbacks,
-      overAllRating: user?.overAllRating,
     };
     return res.status(200).json({ data: userRecord });
   }
@@ -144,16 +95,9 @@ module.exports.getLoggedInUser = async (req, res) => {
         }
         let data = {
           email: user.email,
+          fullName: user.fullName,
           token,
           _id: user._id,
-          contact: user.contact,
-          address: user.address,
-          name: user.name,
-          img: user.img ? user?.img : "",
-          favouriteProducts: user?.favouriteProducts,
-          userId: user?.userId,
-          feedbacks: user?.feedbacks,
-          overAllRating: user?.overAllRating,
         };
         res.status(202).json({
           status: "success",
