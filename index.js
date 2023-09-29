@@ -16,6 +16,7 @@ const applySupplierRouter = require("./routes/apply-supplier");
 const scheuldeRouter = require("./routes/schedule-router");
 const billingRouter = require("./routes/billing-router");
 const measurementRouter = require("./routes/mesurement-router");
+const dashboardRouter = require("./routes/dashboard-router");
 const app = express();
 require("dotenv").config();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -48,6 +49,7 @@ app.use("/api", applySupplierRouter);
 app.use("/api", scheuldeRouter);
 app.use("/api", billingRouter);
 app.use("/api", measurementRouter);
+app.use("/api", dashboardRouter);
 
 // app.listen(process.env.PORT || 5002, () =>
 //   console.log(`Server running on port ${process.env.PORT}`)
