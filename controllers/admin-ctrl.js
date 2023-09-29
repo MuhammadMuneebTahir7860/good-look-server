@@ -43,11 +43,11 @@ module.exports.adminLogin = async (req, res) => {
       name: user.name,
       img: user.img ? user.img : "",
       favoriteSuppliers: user?.favoriteSuppliers,
+      images: user?.images,
     };
     return res.status(200).json({ data: userRecord });
   }
 };
-
 
 module.exports.getLoggedInUser = async (req, res) => {
   if (!req.body?.token) {
@@ -83,6 +83,7 @@ module.exports.getLoggedInUser = async (req, res) => {
           img: user.img ? user?.img : "",
           favouriteProducts: user?.favouriteProducts,
           userId: user?.userId,
+          images: user?.images,
         };
         res.status(202).json({
           status: "success",
@@ -105,5 +106,31 @@ module.exports.getLoggedInUser = async (req, res) => {
           .json({ status: "error", message: "Invalid token", statusCode: 400 });
       }
     }
+  }
+};
+
+module.exports.updateAdmin = async (req, res) => {
+  const data = req.body.userData;
+  try {
+    if (data?._id) {
+      const userData = await AdminModel.findByIdAndUpdate(data?._id, data, {
+        new: true,
+      });
+      return res.status(200).json({ msg: "Updated!", data: userData });
+    }
+    return res.status(401).json({ msg: "Not found" });
+  } catch (error) {
+    res.status(200).send(error);
+  }
+};
+
+module.exports.AdminPortfolio = async (req, res) => {
+  try {
+    const userData = await AdminModel.findOne({
+      _id: "64bb8b65db1283c2064fc1f1",
+    });
+    return res.status(200).json({ msg: "FOUND!", data: userData.images });
+  } catch (error) {
+    res.status(200).send(error);
   }
 };
