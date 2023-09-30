@@ -10,7 +10,7 @@ const Stripe = require("stripe")(
 
 
 module.exports.addAppointment = async (req, res) => {
-
+console.log(req.body);
   try {
     let newData = {
       name: req.body.name,
@@ -19,12 +19,11 @@ module.exports.addAppointment = async (req, res) => {
       email: req.body.email,
       service: req.body.service
     }
-    let resValue = await Order.create(req.body)
-    console.log(resValue, 'resValye');
-    // await resValue.save();
+    let resValue = new Order(newData);
+    await resValue.save();
     res.status(200).json({ data: resValue });
   } catch (error) {
-    console.log(error.message);
+    console.log();
     res.status(404).json({ data: error.message });
   }
 };

@@ -1,25 +1,25 @@
 var mongoose = require("mongoose");
 const OrderSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
-    required: true,
-  },
-  sellerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
-    required: true,
-  },
-  productId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "product",
-  },
-  billingDetail: {
-    type: Object,
-  },
-  img: {
-    type: String,
-  },
+  // userId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "users",
+  //   required: true,
+  // },
+  // sellerId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "users",
+  //   required: true,
+  // },
+  // productId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "product",
+  // // },
+  // billingDetail: {
+  //   type: Object,
+  // },
+  // img: {
+  //   type: String,
+  // },
   isApproved: {
     type: Boolean,
     default: false,
@@ -28,10 +28,10 @@ const OrderSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  amount: {
-    type: Number,
-    required: true,
-  },
+  // amount: {
+  //   type: Number,
+  //   required: true,
+  // },
   name: {
     type: String
   },
