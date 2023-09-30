@@ -32,6 +32,19 @@ const OrderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  name: {
+    type: String
+  },
+  email: {
+    type: String
+  }, date: {
+    type: String
+  }, time: {
+    type: String
+  },
+  service: {
+    type: String
+  },
   createdAt: {
     type: Date,
     default: Date.now,

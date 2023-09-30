@@ -6,6 +6,7 @@ const Order = require("../controllers/order-ctrl");
 const router = express.Router();
 
 router.post("/charge", Order.paymentCharge);
+router.post("/addAppointment", Order.addAppointment);
 router.get("/getAllOrders", Order.getAllOrders);
 router.put("/updateOrder", Order.updateOrder);
 router.delete("/deleteOrder/:id", Order.deleteOrder);

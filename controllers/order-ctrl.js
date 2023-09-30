@@ -1,3 +1,4 @@
+const orderModel = require("../models/order-model");
 const Order = require("../models/order-model");
 const UserModel = require("../models/user-model");
 const SendEmail = require("../utilis/SendEmail");
@@ -6,6 +7,28 @@ const asyncHandler = require("../utilis/asyncHandler");
 const Stripe = require("stripe")(
   "sk_test_51LzN7gKuTiMVlxYm4tlDbupOJyX5PUVxUfeixsFvpKSidpUIj1ZDmyZmNuIcBQaT4dAUGSGvyF1X1CSwHNiErVYV003C4MK1IO"
 );
+
+
+module.exports.addAppointment = async (req, res) => {
+
+  try {
+    let newData = {
+      name: req.body.name,
+      time: req.body.time,
+      date: req.body.date,
+      email: req.body.email,
+      service: req.body.service
+    }
+    let resValue = await Order.create(req.body)
+    console.log(resValue, 'resValye');
+    // await resValue.save();
+    res.status(200).json({ data: resValue });
+  } catch (error) {
+    console.log(error.message);
+    res.status(404).json({ data: error.message });
+  }
+};
+
 
 module.exports.paymentCharge = async (req, res) => {
   const { token, amount, userId, product, sellerId } = req.body;
@@ -16,7 +39,6 @@ module.exports.paymentCharge = async (req, res) => {
       amount,
       currency: "usd",
     });
-    console.log(stripeCharge, "stripeCharge");
     const payment = new Order({
       amount: stripeCharge.amount / 100,
       userId: userId,
